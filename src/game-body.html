@@ -1,0 +1,82 @@
+<div class="app" id="app">
+  <header>
+    <div class="brand">
+      <h1>Crease</h1>
+      <span class="tag" id="puzzleTag">Daily</span>
+      <span class="streak" id="streak" hidden></span>
+    </div>
+    <div class="modes">
+      <div class="seg" role="group" aria-label="Game mode">
+        <button id="btnDaily" aria-pressed="true">Daily</button>
+        <button id="btnPractice" aria-pressed="false">Practice</button>
+      </div>
+      <button class="icon-btn" id="btnHelp" aria-label="How to play">?</button>
+    </div>
+  </header>
+  <nav class="sitenav" aria-label="Site"><a href="archive/">Archive</a><a href="how-to-play.html">Strategy</a><a href="answers/">Answers</a></nav>
+
+  <p class="lede"><span id="lede"></span> <a href="./" id="backToday" hidden>Back to today</a></p>
+
+  <section class="mat" id="mat" aria-label="Puzzle board">
+    <div class="row-label"><span>Target</span><span class="faint">a flipped match counts</span></div>
+    <div class="target" id="target"></div>
+    <div class="divider"></div>
+    <div class="row-label"><span>Your strip</span><span class="pips" id="pips"></span></div>
+    <div class="strip" id="strip"></div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </section>
+
+  <div class="controls" id="controls">
+    <button class="btn" id="btnUndo">Undo</button>
+    <button class="btn" id="btnReset">Reset</button>
+    <button class="btn" id="btnHint">Hint</button>
+  </div>
+
+  <section class="practice" id="practiceBar" hidden>
+    <span class="lbl">Practice difficulty</span>
+    <button class="chip" data-k="2" aria-pressed="false">Easy · 2 folds</button>
+    <button class="chip" data-k="3" aria-pressed="true">Medium · 3 folds</button>
+    <button class="chip" data-k="4" aria-pressed="false">Hard · 4 folds</button>
+    <button class="btn primary" id="btnNew">New puzzle</button>
+  </section>
+
+  <section class="sheet" id="result" hidden>
+    <h2 id="resTitle"></h2>
+    <p id="resLine"></p>
+    <div class="emoji" id="resEmoji" aria-hidden="true"></div>
+    <div class="stats" id="resStats">
+      <div class="stat"><b id="stDays">0</b><span>Days solved</span></div>
+      <div class="stat"><b id="stStreak">0</b><span>Streak</span></div>
+      <div class="stat"><b id="stBest">0</b><span>Best streak</span></div>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="btnShare">Share result</button>
+      <button class="btn" id="btnMore">Keep playing</button>
+      <a class="btn" href="archive/">Past puzzles</a>
+    </div>
+    <p class="next" id="resNext"></p>
+    <textarea id="shareBox" readonly hidden aria-label="Result text to copy"></textarea>
+  </section>
+
+  <div id="ad-slot"></div>
+  <footer>A new Crease every day. Fold carefully.</footer>
+</div>
+
+<div class="overlay" id="help" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+  <div class="card">
+    <h2 id="helpTitle">How to play</h2>
+    <ol>
+      <li>Tap a dashed line between two cells to fold the strip there.</li>
+      <li>The shorter side flips over the longer side. Numbers that land on each other add up.</li>
+      <li>Match the target using all of your folds. Strips can be flipped, so a reversed match counts.</li>
+      <li>Running out of folds without a match is a failed attempt. Undo and reset are free.</li>
+    </ol>
+    <div class="example" aria-label="Example: folding 2 5 and 1 3 in the middle gives 6 5">
+      <span class="mini"><i>2</i><i>5</i><s></s><i>1</i><i>3</i></span>
+      <span class="arrow">fold &rarr;</span>
+      <span class="mini"><i class="t">6</i><i class="t">5</i></span>
+    </div>
+    <p style="margin:0;color:var(--muted);font-size:14px">Here 5 lands on 1 and 2 lands on 3.</p>
+    <button class="btn primary" id="btnCloseHelp">Start folding</button>
+  </div>
+</div>

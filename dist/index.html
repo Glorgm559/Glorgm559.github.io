@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crease: a daily folding puzzle game</title>
+<meta name="description" content="Crease is a free daily folding puzzle. Fold a strip of numbers until it matches the target. New puzzle every day.">
+<link rel="canonical" href="https://example.com/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Crease">
+<meta property="og:title" content="Crease: a daily folding puzzle game">
+<meta property="og:description" content="Crease is a free daily folding puzzle. Fold a strip of numbers until it matches the target. New puzzle every day.">
+<meta property="og:url" content="https://example.com/">
+<meta property="og:image" content="https://example.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://example.com/og.png">
+<meta name="theme-color" content="#131A2A">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="icon-192.png">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="alternate" type="application/rss+xml" title="Crease" href="feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..600&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="style.css?v=2026-10-24">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"VideoGame","name":"Crease","description":"Crease is a free daily folding puzzle. Fold a strip of numbers until it matches the target. New puzzle every day.","url":"https://example.com/","genre":"Puzzle","gamePlatform":"Web browser","applicationCategory":"Game","operatingSystem":"Any","inLanguage":"en","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"What is Crease?","acceptedAnswer":{"@type":"Answer","text":"Crease is a free daily puzzle game. You get a strip of numbered cells and a target strip. You fold the strip at the creases between cells, the shorter side flips over the longer side, and numbers that land on each other add up. Match the target using exactly the folds you are given."}},{"@type":"Question","name":"When does the new puzzle appear?","acceptedAnswer":{"@type":"Answer","text":"At midnight in your own time zone. Everyone gets the same puzzle for the same calendar date, so you can compare results with friends."}},{"@type":"Question","name":"How hard is it?","acceptedAnswer":{"@type":"Answer","text":"It scales through the week. Mondays and Tuesdays need 2 folds, midweek puzzles need 3, and Saturdays and Sundays need 4. Every puzzle is checked by a solver, so each one is solvable in exactly the stated number of folds."}},{"@type":"Question","name":"Can I play past puzzles?","acceptedAnswer":{"@type":"Answer","text":"Yes. The archive has every past puzzle. Archive plays do not count toward your daily streak. There is also an endless Practice mode with three difficulty levels."}},{"@type":"Question","name":"Does it work offline?","acceptedAnswer":{"@type":"Answer","text":"Yes. Open Crease in your phone browser and use Add to Home Screen. After the first visit it runs without a connection."}},{"@type":"Question","name":"Is there a trick to solving it?","acceptedAnswer":{"@type":"Answer","text":"Several. Start with the length budget: each fold removes as many cells as the shorter side has. The Strategy page walks through the best tricks with examples."}}]}</script>
+</head>
+<body>
+<div class="app" id="app">
+  <header>
+    <div class="brand">
+      <h1>Crease</h1>
+      <span class="tag" id="puzzleTag">Daily</span>
+      <span class="streak" id="streak" hidden></span>
+    </div>
+    <div class="modes">
+      <div class="seg" role="group" aria-label="Game mode">
+        <button id="btnDaily" aria-pressed="true">Daily</button>
+        <button id="btnPractice" aria-pressed="false">Practice</button>
+      </div>
+      <button class="icon-btn" id="btnHelp" aria-label="How to play">?</button>
+    </div>
+  </header>
+  <nav class="sitenav" aria-label="Site"><a href="archive/">Archive</a><a href="how-to-play.html">Strategy</a><a href="answers/">Answers</a></nav>
+
+  <p class="lede"><span id="lede"></span> <a href="./" id="backToday" hidden>Back to today</a></p>
+
+  <section class="mat" id="mat" aria-label="Puzzle board">
+    <div class="row-label"><span>Target</span><span class="faint">a flipped match counts</span></div>
+    <div class="target" id="target"></div>
+    <div class="divider"></div>
+    <div class="row-label"><span>Your strip</span><span class="pips" id="pips"></span></div>
+    <div class="strip" id="strip"></div>
+    <div class="status" id="status" role="status" aria-live="polite"></div>
+  </section>
+
+  <div class="controls" id="controls">
+    <button class="btn" id="btnUndo">Undo</button>
+    <button class="btn" id="btnReset">Reset</button>
+    <button class="btn" id="btnHint">Hint</button>
+  </div>
+
+  <section class="practice" id="practiceBar" hidden>
+    <span class="lbl">Practice difficulty</span>
+    <button class="chip" data-k="2" aria-pressed="false">Easy · 2 folds</button>
+    <button class="chip" data-k="3" aria-pressed="true">Medium · 3 folds</button>
+    <button class="chip" data-k="4" aria-pressed="false">Hard · 4 folds</button>
+    <button class="btn primary" id="btnNew">New puzzle</button>
+  </section>
+
+  <section class="sheet" id="result" hidden>
+    <h2 id="resTitle"></h2>
+    <p id="resLine"></p>
+    <div class="emoji" id="resEmoji" aria-hidden="true"></div>
+    <div class="stats" id="resStats">
+      <div class="stat"><b id="stDays">0</b><span>Days solved</span></div>
+      <div class="stat"><b id="stStreak">0</b><span>Streak</span></div>
+      <div class="stat"><b id="stBest">0</b><span>Best streak</span></div>
+    </div>
+    <div class="actions">
+      <button class="btn primary" id="btnShare">Share result</button>
+      <button class="btn" id="btnMore">Keep playing</button>
+      <a class="btn" href="archive/">Past puzzles</a>
+    </div>
+    <p class="next" id="resNext"></p>
+    <textarea id="shareBox" readonly hidden aria-label="Result text to copy"></textarea>
+  </section>
+
+  <div id="ad-slot"></div>
+  
+  <section class="about" aria-labelledby="about-h">
+    <h2 id="about-h">A daily puzzle about folding paper</h2>
+    <p>Crease turns paper folding into arithmetic. Every day there is one new strip of numbers and one target to hit. The numbers you fold on top of each other add together, so each fold both shortens the strip and builds bigger totals. Hitting the target takes a mix of counting and planning ahead.</p>
+    <p>Stuck? Read the <a href="how-to-play.html">strategy guide</a>, browse <a href="archive/">past puzzles</a>, or check the <a href="answers/">answers archive</a> after a puzzle is two days old.</p>
+    <h2>Questions</h2>
+    <div class="faq">
+      <details><summary>What is Crease?</summary><p>Crease is a free daily puzzle game. You get a strip of numbered cells and a target strip. You fold the strip at the creases between cells, the shorter side flips over the longer side, and numbers that land on each other add up. Match the target using exactly the folds you are given.</p></details>
+      <details><summary>When does the new puzzle appear?</summary><p>At midnight in your own time zone. Everyone gets the same puzzle for the same calendar date, so you can compare results with friends.</p></details>
+      <details><summary>How hard is it?</summary><p>It scales through the week. Mondays and Tuesdays need 2 folds, midweek puzzles need 3, and Saturdays and Sundays need 4. Every puzzle is checked by a solver, so each one is solvable in exactly the stated number of folds.</p></details>
+      <details><summary>Can I play past puzzles?</summary><p>Yes. The archive has every past puzzle. Archive plays do not count toward your daily streak. There is also an endless Practice mode with three difficulty levels.</p></details>
+      <details><summary>Does it work offline?</summary><p>Yes. Open Crease in your phone browser and use Add to Home Screen. After the first visit it runs without a connection.</p></details>
+      <details><summary>Is there a trick to solving it?</summary><p>Several. Start with the length budget: each fold removes as many cells as the shorter side has. The Strategy page walks through the best tricks with examples.</p></details>
+    </div>
+  </section>
+  <footer>Crease &middot; <a href="about.html">About</a> &middot; <a href="privacy.html">Privacy</a> &middot; <a href="feed.xml">RSS</a></footer>
+</div>
+
+<div class="overlay" id="help" hidden role="dialog" aria-modal="true" aria-labelledby="helpTitle">
+  <div class="card">
+    <h2 id="helpTitle">How to play</h2>
+    <ol>
+      <li>Tap a dashed line between two cells to fold the strip there.</li>
+      <li>The shorter side flips over the longer side. Numbers that land on each other add up.</li>
+      <li>Match the target using all of your folds. Strips can be flipped, so a reversed match counts.</li>
+      <li>Running out of folds without a match is a failed attempt. Undo and reset are free.</li>
+    </ol>
+    <div class="example" aria-label="Example: folding 2 5 and 1 3 in the middle gives 6 5">
+      <span class="mini"><i>2</i><i>5</i><s></s><i>1</i><i>3</i></span>
+      <span class="arrow">fold &rarr;</span>
+      <span class="mini"><i class="t">6</i><i class="t">5</i></span>
+    </div>
+    <p style="margin:0;color:var(--muted);font-size:14px">Here 5 lands on 1 and 2 lands on 3.</p>
+    <button class="btn primary" id="btnCloseHelp">Start folding</button>
+  </div>
+</div>
+
+<noscript><p style="padding:16px">Crease needs JavaScript to run. It is a small puzzle game with no tracking and no sign-up.</p></noscript>
+<script>window.CREASE={"site":"https://example.com","built":"2026-10-24"};</script>
+<script src="logic.js?v=2026-10-24"></script>
+<script src="app.js?v=2026-10-24"></script>
+</body>
+</html>

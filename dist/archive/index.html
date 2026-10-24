@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Crease puzzle archive: every daily puzzle</title>
+<meta name="description" content="Play every past Crease puzzle. Pick a date, fold the strip, and see how many days you have solved.">
+<link rel="canonical" href="https://example.com/archive/">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Crease">
+<meta property="og:title" content="Crease puzzle archive: every daily puzzle">
+<meta property="og:description" content="Play every past Crease puzzle. Pick a date, fold the strip, and see how many days you have solved.">
+<meta property="og:url" content="https://example.com/archive/">
+<meta property="og:image" content="https://example.com/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://example.com/og.png">
+<meta name="theme-color" content="#131A2A">
+<link rel="icon" href="../favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="../icon-192.png">
+<link rel="manifest" href="../manifest.webmanifest">
+<link rel="alternate" type="application/rss+xml" title="Crease" href="../feed.xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,500..800&family=Instrument+Sans:wght@400..600&family=JetBrains+Mono:wght@500;700&display=swap">
+<link rel="stylesheet" href="../style.css?v=2026-10-24">
+
+</head>
+<body>
+<div class="app doc">
+<header><a class="logo" href="../">Crease</a></header>
+<nav class="sitenav" aria-label="Site"><a href="../">Play</a><a href="../archive/" aria-current="page">Archive</a><a href="../how-to-play.html">Strategy</a><a href="../answers/">Answers</a><a href="../about.html">About</a></nav>
+<h1>Puzzle archive</h1>
+<p>Every Crease puzzle so far. Solved puzzles get a check mark. Archive plays do not count toward your daily streak.</p>
+<div class="tools"><a class="btn primary" href="../">Play today's puzzle</a></div>
+<ul class="archive" id="archive">
+<li data-date="2026-10-24"><a href="../?d=2026-10-24"><b>#1</b><span>Sat Oct 24 &middot; 4 folds</span></a></li>
+</ul>
+<script>(function(){try{var s=JSON.parse(localStorage.getItem('crease:v1:stats'));if(!s||!s.days)return;document.querySelectorAll('#archive li').forEach(function(li){var d=s.days[li.dataset.date];if(d&&d.solved)li.className='done';});}catch(e){}})();</script>
+<footer>Crease &middot; <a href="../about.html">About</a> &middot; <a href="../privacy.html">Privacy</a> &middot; <a href="../feed.xml">RSS</a></footer>
+</div>
+</body>
+</html>
